@@ -1,0 +1,520 @@
+import { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import axios from "axios";
+import "./RestaurantAdminRegister.css";
+
+const API_URL = "http://localhost:5001";
+
+function RestaurantAdminRegister() {
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
+  // Form states
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    restaurantName: "",
+    restaurantDescription: "",
+    cuisine: "Indian",
+    phone: "",
+    city: "",
+    state: "",
+    pincode: "",
+  });
+
+  const cuisineOptions = [
+    "Indian",
+    "Chinese",
+    "Italian",
+    "Mexican",
+    "American",
+    "Thai",
+    "Continental",
+    "Fusion",
+    "North Indian",
+    "South Indian",
+    "Fast Food",
+    "Cafe",
+    "Bakery",
+    "Desserts",
+  ];
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    setError("");
+    setSuccess("");
+
+    // Validation
+    if (!formData.name.trim()) {
+      setError("❌ Please enter your name");
+      return;
+    }
+    if (!formData.email.includes("@")) {
+      setError("❌ Please enter a valid email");
+      return;
+    }
+    if (formData.password.length < 6) {
+      setError("❌ Password must be at least 6 characters");
+      return;
+    }
+    if (formData.password !== formData.confirmPassword) {
+      setError("❌ Passwords do not match");
+      return;
+    }
+    if (!formData.restaurantName.trim()) {
+      setError("❌ Please enter restaurant name");
+      return;
+    }
+    if (!formData.phone.trim()) {
+      setError("❌ Please enter phone number");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const payload = {
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        password: formData.password,
+        restaurantName: formData.restaurantName.trim(),
+        restaurantDescription: formData.restaurantDescription.trim(),
+        cuisine: formData.cuisine,
+        phone: formData.phone.trim(),
+        city: formData.city.trim(),
+        state: formData.state.trim(),
+        pincode: formData.pincode.trim(),
+      };
+
+      console.log("📤 Sending registration data:", payload);
+
+      const res = await axios.post(`${API_URL}/api/auth/register-restaurant-admin`, payload);
+
+      console.log("✅ Registration response:", res.data);
+
+      const { token, user, restaurant } = res.data;
+
+      // Store in localStorage for convenience
+      localStorage.setItem("restaurantAdminToken", token);
+      localStorage.setItem("restaurantAdmin", JSON.stringify(user));
+      localStorage.setItem("restaurant", JSON.stringify(restaurant));
+
+      setSuccess("✅ Registration successful! Your account is pending admin approval. You will be able to access the dashboard once approved.");
+
+      // Redirect to login after 2 seconds
+      setTimeout(() => {
+        navigate("/restaurantadmin-login");
+      }, 2000);
+    } catch (err) {
+      const errorMsg = err.response?.data?.message || err.message || "Registration failed";
+      console.error("❌ Registration error:", errorMsg);
+      console.error("Full error:", err);
+      setError("❌ " + errorMsg);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div style={styles.wrapper}>
+      <div style={styles.container}>
+        <div style={styles.card}>
+          <div style={styles.header}>
+            <h1 style={styles.title}>🍽️ Register Your Restaurant</h1>
+            <p style={styles.subtitle}>Create admin account and manage your restaurant</p>
+          </div>
+
+          {error && <div style={styles.errorBox}>{error}</div>}
+          {success && <div style={styles.successBox}>{success}</div>}
+
+          <form onSubmit={handleRegister} style={styles.form}>
+            {/* SECTION 1: Your Information */}
+            <div style={styles.section}>
+              <h3 style={styles.sectionTitle}>👤 Your Information</h3>
+
+              <div style={styles.inputGroup}>
+                <label style={styles.label}>Full Name *</label>
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="Enter your full name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  style={styles.input}
+                />
+              </div>
+
+              <div style={styles.inputGroup}>
+                <label style={styles.label}>Email Address *</label>
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Enter your email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  style={styles.input}
+                />
+              </div>
+
+              <div style={styles.twoColumn}>
+                <div style={styles.inputGroup}>
+                  <label style={styles.label}>Password *</label>
+                  <input
+                    type="password"
+                    name="password"
+                    placeholder="Min 6 characters"
+                    value={formData.password}
+                    onChange={handleChange}
+                    style={styles.input}
+                  />
+                </div>
+
+                <div style={styles.inputGroup}>
+                  <label style={styles.label}>Confirm Password *</label>
+                  <input
+                    type="password"
+                    name="confirmPassword"
+                    placeholder="Confirm password"
+                    value={formData.confirmPassword}
+                    onChange={handleChange}
+                    style={styles.input}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* SECTION 2: Restaurant Information */}
+            <div style={styles.section}>
+              <h3 style={styles.sectionTitle}>🏪 Restaurant Information</h3>
+
+              <div style={styles.inputGroup}>
+                <label style={styles.label}>Restaurant Name *</label>
+                <input
+                  type="text"
+                  name="restaurantName"
+                  placeholder="Enter restaurant name"
+                  value={formData.restaurantName}
+                  onChange={handleChange}
+                  style={styles.input}
+                />
+              </div>
+
+              <div style={styles.inputGroup}>
+                <label style={styles.label}>Description</label>
+                <textarea
+                  name="restaurantDescription"
+                  placeholder="Tell us about your restaurant..."
+                  value={formData.restaurantDescription}
+                  onChange={handleChange}
+                  style={{ ...styles.input, minHeight: "80px", resize: "none" }}
+                />
+              </div>
+
+              <div style={styles.twoColumn}>
+                <div style={styles.inputGroup}>
+                  <label style={styles.label}>Cuisine Type *</label>
+                  <select
+                    name="cuisine"
+                    value={formData.cuisine}
+                    onChange={handleChange}
+                    style={styles.input}
+                  >
+                    {cuisineOptions.map((c) => (
+                      <option key={c} value={c}>
+                        {c}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div style={styles.inputGroup}>
+                  <label style={styles.label}>Phone Number *</label>
+                  <input
+                    type="tel"
+                    name="phone"
+                    placeholder="Enter phone number"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    style={styles.input}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* SECTION 3: Location Details */}
+            <div style={styles.section}>
+              <h3 style={styles.sectionTitle}>📍 Location Details</h3>
+
+              <div style={styles.twoColumn}>
+                <div style={styles.inputGroup}>
+                  <label style={styles.label}>City</label>
+                  <input
+                    type="text"
+                    name="city"
+                    placeholder="Enter city"
+                    value={formData.city}
+                    onChange={handleChange}
+                    style={styles.input}
+                  />
+                </div>
+
+                <div style={styles.inputGroup}>
+                  <label style={styles.label}>State</label>
+                  <input
+                    type="text"
+                    name="state"
+                    placeholder="Enter state"
+                    value={formData.state}
+                    onChange={handleChange}
+                    style={styles.input}
+                  />
+                </div>
+              </div>
+
+              <div style={styles.inputGroup}>
+                <label style={styles.label}>Pincode</label>
+                <input
+                  type="text"
+                  name="pincode"
+                  placeholder="Enter pincode"
+                  value={formData.pincode}
+                  onChange={handleChange}
+                  style={styles.input}
+                />
+              </div>
+            </div>
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              disabled={loading}
+              onMouseEnter={(e) => {
+                if (!loading) {
+                  e.target.style.transform = "translateY(-2px)";
+                  e.target.style.boxShadow = "0 12px 28px rgba(255, 122, 0, 0.5)";
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!loading) {
+                  e.target.style.transform = "translateY(0)";
+                  e.target.style.boxShadow = "0 8px 20px rgba(255, 122, 0, 0.3)";
+                }
+              }}
+              style={{
+                ...styles.button,
+                opacity: loading ? 0.6 : 1,
+                cursor: loading ? "not-allowed" : "pointer",
+              }}
+            >
+              {loading ? "🔄 Creating Account..." : "✓ Create Admin Account"}
+            </button>
+
+            {/* Link to Login */}
+            <div style={styles.footer}>
+              Already have an account?{" "}
+              <Link to="/restaurantadmin-login" style={styles.link}>
+                Login here
+              </Link>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const styles = {
+  wrapper: {
+    width: "100%",
+    minHeight: "100vh",
+    background: "radial-gradient(circle at top, #121212, #080808)",
+    padding: "120px 6%",
+    fontFamily: "'Segoe UI', 'Roboto', sans-serif",
+    position: "relative",
+    overflow: "hidden",
+  },
+
+  container: {
+    maxWidth: "600px",
+    margin: "0 auto",
+    position: "relative",
+    zIndex: 1,
+  },
+
+  card: {
+    background: "rgba(255, 255, 255, 0.04)",
+    backdropFilter: "blur(16px)",
+    WebkitBackdropFilter: "blur(16px)",
+    borderRadius: "22px",
+    padding: "40px",
+    border: "1px solid rgba(255, 255, 255, 0.08)",
+    boxShadow: "0 8px 32px rgba(0, 0, 0, 0.3)",
+    width: "100%",
+    maxHeight: "90vh",
+    overflowY: "auto",
+    transition: "all 0.4s ease",
+  },
+
+  header: {
+    marginBottom: "32px",
+    textAlign: "center",
+  },
+
+  title: {
+    fontSize: "28px",
+    fontWeight: "700",
+    color: "#fff",
+    margin: "0 0 8px 0",
+    letterSpacing: "0.5px",
+  },
+
+  subtitle: {
+    fontSize: "14px",
+    color: "#aaa",
+    margin: "0",
+    fontWeight: "500",
+  },
+
+  errorBox: {
+    background: "rgba(255, 60, 60, 0.15)",
+    backdropFilter: "blur(5px)",
+    border: "1px solid rgba(255, 60, 60, 0.3)",
+    color: "#ffcccc",
+    padding: "12px 16px",
+    borderRadius: "12px",
+    marginBottom: "20px",
+    fontSize: "13px",
+    fontWeight: "500",
+  },
+
+  successBox: {
+    background: "rgba(107, 255, 107, 0.15)",
+    backdropFilter: "blur(5px)",
+    border: "1px solid rgba(107, 255, 107, 0.3)",
+    color: "#ccffcc",
+    padding: "12px 16px",
+    borderRadius: "12px",
+    marginBottom: "20px",
+    fontSize: "13px",
+    fontWeight: "500",
+  },
+
+  form: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "0",
+  },
+
+  section: {
+    marginBottom: "24px",
+    paddingBottom: "24px",
+    borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
+  },
+
+  sectionTitle: {
+    fontSize: "13px",
+    fontWeight: "700",
+    color: "#fff",
+    marginBottom: "16px",
+    textTransform: "uppercase",
+    letterSpacing: "0.5px",
+    opacity: 0.9,
+  },
+
+  twoColumn: {
+    display: "grid",
+    gridTemplateColumns: "1fr 1fr",
+    gap: "16px",
+  },
+
+  inputGroup: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "6px",
+  },
+
+  label: {
+    fontSize: "12px",
+    fontWeight: "600",
+    color: "#bbb",
+    textTransform: "uppercase",
+    letterSpacing: "0.5px",
+  },
+
+  input: {
+    padding: "12px 14px",
+    background: "rgba(255, 255, 255, 0.06)",
+    border: "1px solid rgba(255, 255, 255, 0.12)",
+    borderRadius: "12px",
+    fontSize: "13px",
+    fontFamily: "inherit",
+    transition: "all 0.3s ease",
+    outline: "none",
+    boxSizing: "border-box",
+    color: "#fff",
+    backdropFilter: "blur(10px)",
+    WebkitBackdropFilter: "blur(10px)",
+  },
+
+  button: {
+    padding: "14px 20px",
+    background: "linear-gradient(135deg, #ff7a00, #ff3c3c)",
+    color: "white",
+    border: "none",
+    borderRadius: "12px",
+    fontSize: "14px",
+    fontWeight: "700",
+    cursor: "pointer",
+    marginTop: "16px",
+    transition: "all 0.3s ease",
+    boxShadow: "0 8px 20px rgba(255, 122, 0, 0.3)",
+    letterSpacing: "0.5px",
+    width: "100%",
+    pointerEvents: "auto",
+    zIndex: 10,
+    position: "relative",
+  },
+
+  footer: {
+    textAlign: "center",
+    marginTop: "24px",
+    fontSize: "13px",
+    color: "#aaa",
+  },
+
+  link: {
+    color: "#ff7a00",
+    textDecoration: "none",
+    fontWeight: "700",
+    cursor: "pointer",
+    transition: "color 0.3s ease",
+  },
+
+  "@media (max-width: 768px)": {
+    wrapper: {
+      padding: "80px 4%",
+    },
+    card: {
+      padding: "30px",
+    },
+    title: {
+      fontSize: "22px",
+    },
+    twoColumn: {
+      gridTemplateColumns: "1fr",
+    },
+  },
+};
+
+export default RestaurantAdminRegister;

@@ -1,0 +1,51 @@
+.category-strip {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding: 30px 5%;
+  flex-wrap: wrap; /* 🔥 important for mobile */
+}
+
+.category-card {
+  background: #141414;
+  padding: 18px 22px;
+  border-radius: 14px;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.3s ease;
+  min-width: 110px;
+  flex: 1 1 120px;
+}
+
+.category-card:hover {
+  transform: translateY(-4px);
+  background: #1f1f1f;
+}
+
+.category-icon {
+  font-size: 22px;
+  margin-bottom: 8px;
+  color: white;
+}
+
+.category-card p {
+  font-size: 13px;
+  opacity: 0.9;
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .category-strip {
+    gap: 12px;
+    padding: 20px 4%;
+  }
+
+  .category-card {
+    padding: 14px 10px;
+    min-width: 90px;
+  }
+
+  .category-card p {
+    font-size: 12px;
+  }
+}

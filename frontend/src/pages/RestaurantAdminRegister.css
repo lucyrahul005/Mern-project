@@ -1,0 +1,230 @@
+/* ============================= */
+/* RESTAURANT ADMIN REGISTER CSS - Multi-Step Form */
+/* ============================= */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* Select dropdown styling */
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 20px;
+  padding-right: 36px !important;
+  cursor: pointer;
+}
+
+select option {
+  background: #1a1a1a;
+  color: #fff;
+  padding: 8px;
+  margin: 4px 0;
+}
+
+select option:checked {
+  background: #ff7a00;
+  color: #fff;
+}
+
+/* Input field styles with focus effects */
+input:focus,
+textarea:focus,
+select:focus {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border-color: #ff7a00 !important;
+  box-shadow: 0 0 20px rgba(255, 122, 0, 0.2) !important;
+  outline: none;
+}
+
+/* File input special styling */
+input[type="file"]:hover {
+  border-color: #ff7a00 !important;
+  background: rgba(255, 122, 0, 0.05) !important;
+}
+
+input[type="file"]::file-selector-button {
+  background: linear-gradient(135deg, #ff7a00, #ff3c3c);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  margin-right: 10px;
+  transition: all 0.3s ease;
+}
+
+input[type="file"]::file-selector-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(255, 122, 0, 0.3);
+}
+
+/* Button hover effects */
+button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(255, 122, 0, 0.4) !important;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+button:focus {
+  outline: 2px solid #ff7a00;
+  outline-offset: 2px;
+}
+
+/* Success/Error animations */
+.successBox,
+.errorBox,
+.warningBox {
+  animation: slideIn 0.3s ease;
+}
+
+/* Step content animation */
+.stepContent {
+  animation: fadeIn 0.4s ease !important;
+}
+
+/* Mobile responsive tweaks */
+@media (max-width: 768px) {
+  /* Stack buttons vertically on mobile */
+  .navigation {
+    flex-direction: column-reverse !important;
+    gap: 12px !important;
+  }
+
+  button {
+    width: 100% !important;
+  }
+
+  /* Make inputs take full width */
+  input,
+  select,
+  textarea {
+    width: 100% !important;
+    box-sizing: border-box !important;
+    font-size: 16px !important; /* Prevents zoom on focus */
+  }
+
+  /* Adjust font sizes for mobile */
+  h1 {
+    font-size: 20px !important;
+  }
+
+  h2 {
+    font-size: 16px !important;
+  }
+
+  /* Better spacing on mobile */
+  .card {
+    padding: 20px !important;
+    margin: 0 !important;
+    border-radius: 16px !important;
+  }
+
+  /* Two column to single column on mobile */
+  .twoColumn {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Better label visibility */
+  label {
+    font-size: 12px !important;
+  }
+}
+
+/* Ultra small screens */
+@media (max-width: 480px) {
+  body {
+    font-size: 14px;
+  }
+
+  .wrapper {
+    padding: 30px 3% !important;
+  }
+
+  .card {
+    padding: 15px !important;
+  }
+
+  .title {
+    font-size: 18px !important;
+  }
+
+  .subtitle {
+    font-size: 12px !important;
+  }
+
+  /* Better legend readability */
+  .stepTitle {
+    font-size: 14px !important;
+  }
+
+  .label {
+    font-size: 11px !important;
+  }
+}
+
+/* Text area and input general styles */
+textarea {
+  font-family: inherit !important;
+  resize: vertical !important;
+}
+
+/* Link styling */
+a {
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Smooth transitions for all elements */
+* {
+  transition: all 0.3s ease;
+}
+
+/* Accessibility improvements */
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+}

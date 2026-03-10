@@ -1,0 +1,483 @@
+/* Products Premium Page Styles */
+
+.products-premium {
+  min-height: 100vh;
+  background: var(--bg);
+  padding-bottom: 40px;
+  transition: background 0.3s ease;
+}
+
+/* Header */
+.products-header {
+  background: linear-gradient(135deg, #ff8a00 0%, #ff6f00 100%);
+  color: white;
+  padding: 40px 0;
+  margin-bottom: 30px;
+  box-shadow: 0 16px 30px rgba(255, 126, 0, 0.18);
+}
+
+.products-header .header-content {
+  text-align: center;
+}
+
+.products-title {
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0 0 10px 0;
+}
+
+.products-subtitle {
+  font-size: 16px;
+  opacity: 0.9;
+  margin: 0;
+}
+
+/* Filters Section */
+.filters-section-products {
+  background: var(--card);
+  padding: 25px 0;
+  margin-bottom: 30px;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 60px;
+  z-index: 100;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 12px 24px rgba(34, 30, 24, 0.06);
+  transition: background 0.3s ease;
+}
+
+.filters-container-products {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Categories */
+.filter-group-categories {
+  width: 100%;
+}
+
+.categories-scroll {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+}
+
+.categories-scroll::-webkit-scrollbar {
+  height: 4px;
+}
+
+.categories-scroll::-webkit-scrollbar-track {
+  background: #f0f0f0;
+}
+
+.categories-scroll::-webkit-scrollbar-thumb {
+  background: #ff7a00;
+  border-radius: 2px;
+}
+
+.category-btn {
+  padding: 10px 20px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 14px;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+  color: var(--text);
+}
+
+.category-btn:hover {
+  border-color: #ff8a00;
+  color: #ff8a00;
+  background: #fff2e3;
+}
+
+.category-btn.active {
+  background: linear-gradient(135deg, #ff8a00 0%, #ff6f00 100%);
+  border-color: #ff8a00;
+  color: white;
+  box-shadow: 0 10px 18px rgba(255, 126, 0, 0.28);
+}
+
+/* Filter Controls */
+.filter-controls {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  padding: 0 20px;
+}
+
+.filter-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filter-item label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.filter-checkbox {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #ff7a00;
+}
+
+.filter-select {
+  padding: 8px 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--card);
+  cursor: pointer;
+  font-weight: 500;
+  color: var(--text);
+  transition: all 0.3s ease;
+}
+
+.filter-select:hover {
+  border-color: #ff7a00;
+}
+
+.filter-select:focus {
+  outline: none;
+  border-color: #ff7a00;
+  box-shadow: 0 0 0 3px rgba(255, 122, 0, 0.1);
+}
+
+/* Products Grid */
+.products-content {
+  padding: 0 20px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+@media (max-width: 768px) {
+  .products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .products-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 80px 20px;
+  background: var(--card);
+  border-radius: 12px;
+  margin: 20px 0;
+  transition: background 0.3s ease;
+}
+
+.empty-icon {
+  font-size: 64px;
+  margin-bottom: 20px;
+}
+
+.empty-state h2 {
+  font-size: 24px;
+  color: var(--text);
+  margin: 0 0 10px 0;
+}
+
+.empty-state p {
+  font-size: 16px;
+  color: var(--text);
+  opacity: 0.7;
+  margin: 0 0 30px 0;
+}
+
+.empty-state-btn {
+  padding: 12px 30px;
+  background: #ff7a00;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.empty-state-btn:hover {
+  background: #ff6500;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 122, 0, 0.3);
+}
+
+
+/* TITLE */
+.food-title {
+  font-size: 32px;
+  color: #fff;
+  margin-bottom: 40px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* GRID */
+.food-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 28px;
+}
+
+/* ============================= */
+/* ===== FOOD CARD ============ */
+/* ============================= */
+
+.food-card {
+  position: relative;
+  border-radius: 22px;
+  overflow: hidden;
+
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(16px);
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  transition: all 0.4s ease;
+  cursor: pointer;
+}
+
+/* 🔥 Glow effect */
+.food-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 22px;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 122, 0, 0.2),
+    transparent
+  );
+  opacity: 0;
+  transition: 0.4s;
+}
+
+.food-card:hover::before {
+  opacity: 1;
+}
+
+.food-card:hover {
+  transform: translateY(-12px) scale(1.03);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
+}
+
+/* ============================= */
+/* ===== IMAGE ================= */
+/* ============================= */
+
+.food-image {
+  width: 100%;
+  height: 210px;
+  object-fit: cover;
+  transition: 0.5s ease;
+}
+
+.food-card:hover .food-image {
+  transform: scale(1.1);
+}
+
+/* ============================= */
+/* ===== FAVORITE ICON ========= */
+/* ============================= */
+
+.fav-icon {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 40px;
+  height: 40px;
+
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(8px);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 5;
+  cursor: pointer;
+
+  transition: 0.3s ease;
+}
+
+.fav-icon:hover {
+  transform: scale(1.15);
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* ============================= */
+/* ===== TAGS ================== */
+/* ============================= */
+
+.food-tags {
+  position: absolute;
+  bottom: 170px;
+  left: 14px;
+  display: flex;
+  gap: 6px;
+}
+
+.food-tags span {
+  font-size: 10px;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+/* Veg */
+.veg {
+  background: rgba(29, 185, 84, 0.15);
+  color: #1db954;
+  border: 1px solid rgba(29, 185, 84, 0.4);
+}
+
+/* Non-veg */
+.nonveg {
+  background: rgba(255, 60, 60, 0.15);
+  color: #ff3c3c;
+  border: 1px solid rgba(255, 60, 60, 0.4);
+}
+
+/* Popular */
+.popular {
+  background: rgba(255, 122, 0, 0.15);
+  color: #ff7a00;
+  border: 1px solid rgba(255, 122, 0, 0.4);
+}
+
+/* ============================= */
+/* ===== INFO ================== */
+/* ============================= */
+
+.food-info {
+  padding: 18px;
+}
+
+.food-info h3 {
+  color: #fff;
+  font-size: 18px;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+/* Description */
+.desc {
+  font-size: 13px;
+  color: #aaa;
+  margin-bottom: 12px;
+  line-height: 1.4;
+}
+
+/* ============================= */
+/* ===== META ================== */
+/* ============================= */
+
+.meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #bbb;
+  margin-bottom: 14px;
+}
+
+/* ============================= */
+/* ===== BOTTOM =============== */
+/* ============================= */
+
+.bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.price {
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+}
+
+/* ============================= */
+/* ===== ADD BUTTON ============ */
+/* ============================= */
+
+.add-btn {
+  width: 42px;
+  height: 42px;
+
+  border-radius: 50%;
+  border: none;
+
+  background: linear-gradient(135deg, #ff7a00, #ff3c3c);
+
+  color: white;
+  font-size: 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  transition: all 0.3s ease;
+
+  /* 🔥 ADD THESE */
+  position: relative;
+  z-index: 10;
+}
+
+/* Glow pulse */
+.add-btn:hover {
+  transform: scale(1.15);
+  box-shadow: 0 0 15px rgba(255, 122, 0, 0.6);
+}
+
+/* Click effect */
+.add-btn:active {
+  transform: scale(0.95);
+}
+
+/* ============================= */
+/* ===== EMPTY STATE =========== */
+/* ============================= */
+
+.empty {
+  text-align: center;
+  color: #aaa;
+  margin-top: 60px;
+}
+
+.empty h3 {
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}

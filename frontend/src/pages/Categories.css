@@ -1,0 +1,32 @@
+.categories-container {
+  padding: 120px 5% 100px 5%;
+  background: #f3f3f3;
+  min-height: 100vh;
+}
+
+.categories-container h2 {
+  margin-bottom: 25px;
+}
+
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.category-card {
+  background: #fff;
+  padding: 40px 20px;
+  text-align: center;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.category-card:hover {
+  background: #000;
+  color: #fff;
+  transform: translateY(-5px);
+}
