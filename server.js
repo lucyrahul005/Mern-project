@@ -25,10 +25,16 @@ const app = express();
 
 // ================= MIDDLEWARE =================
 console.log("🔧 Configuring middleware...");
-app.use(cors());
+app.use(cors({
+  origin: "https://webnapp-food-delivery.vercel.app",
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+  credentials: true,
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
 app.use(express.json({ limit: "100mb", strict: false }));
 app.use(express.urlencoded({ limit: "100mb", extended: true }));
 console.log("✅ Body parser configured with 100MB limits");
+console.log("✅ CORS enabled for https://webnapp-food-delivery.vercel.app");
 
 // Serve static files for uploads
 app.use("/uploads", express.static("uploads"));
