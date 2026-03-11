@@ -3,14 +3,10 @@
    Light & Dark Theme with CSS Variables
    ============================================= */
 
-.success-wrapper {
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 40px 20px;
-  transition: all 0.3s ease;
-}
+/* =============================================
+   SUCCESS PAGE - THEME SUPPORT
+   Light & Dark Theme with CSS Variables
+   ============================================= */
 
 .success-wrapper {
   min-height: 100vh;
@@ -21,15 +17,6 @@
   transition: all 0.3s ease;
   background: var(--bg);
   color: var(--text);
-}
-
-.success-card {
-  padding: 60px;
-  border-radius: 20px;
-  text-align: center;
-  width: 100%;
-  max-width: 500px;
-  transition: all 0.3s ease;
 }
 
 .success-card {
