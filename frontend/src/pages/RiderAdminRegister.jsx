@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import "../pages/Auth.css";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 const RiderAdminRegister = () => {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
@@ -201,7 +203,7 @@ const RiderAdminRegister = () => {
       }
 
       const response = await fetch(
-        "http://localhost:5001/api/rider/register",
+        `${API_URL}/api/rider/register`,
         {
           method: "POST",
           headers: {

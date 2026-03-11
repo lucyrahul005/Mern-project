@@ -1,5 +1,7 @@
 // Global API Configuration
-export const API_URL = 'http://localhost:5001';
+// In production (Vercel), use environment variable VITE_API_URL
+// In development, default to localhost:5000
+export const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 /**
  * Get complete image URL

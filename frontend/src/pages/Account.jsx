@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useTheme } from "../context/ThemeContext";
-
-const API_URL = "http://localhost:5001";
+import { API_URL } from "../config/api";
 
 // Helper function to get CSS variable values
 const getCSSVar = (varName) => {

@@ -14,10 +14,7 @@ import {
 } from "react-icons/fa";
 import "./Notifications.css";
 
-const API_URL =
-  import.meta.env.MODE === "development"
-    ? "http://localhost:5001"
-    : "https://webnapp-backend.onrender.com";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 // Notification type to icon mapping
 const notificationIcons = {

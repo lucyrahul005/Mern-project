@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import axios from "axios";
-
-const API_URL = "http://localhost:5001";
+import { API_URL } from "../config/api";
 
 function AdminResetPassword() {
   const navigate = useNavigate();

@@ -1,103 +1,89 @@
-# 🛒 MERN E-Commerce WebnApp
+# 🍔 Food Delivery MERN App
 
-A full-stack production-style e-commerce web application built using the MERN stack with authentication, payment integration, and automated email confirmation.
+A full-stack **Food Delivery Web Application** built using the **MERN Stack** with user authentication, restaurant management, order processing, and payment integration.
 
-## 🚀 Live Demo
+## 🚀 Features
 
-Frontend: https://mern-ecommerce-webnapp.vercel.app  
-Backend API: https://webnapp-backend.onrender.com  
-
----
-
-## 📌 Features
-
-- 🔐 JWT Authentication (Register / Login)
-- 🛍 Product Listing with Images
-- 💳 Razorpay Payment Integration
-- 📦 Order Placement & Storage
-- 📧 Automatic Email Confirmation (Resend API)
-- 🔒 Protected Routes
-- 🌙 Premium Black & White UI
-- 📱 Responsive Design
-- ☁️ Cloud Deployment (Vercel + Render)
-
----
+* User authentication with JWT
+* Browse restaurants & menu items
+* Dynamic shopping cart system
+* Order management & tracking
+* Admin dashboard for restaurant management
+* Razorpay payment integration
+* Order confirmation via email
+* Rider assignment system
+* Protected routes & role-based access
+* Responsive UI design
 
 ## 🛠 Tech Stack
 
-### Frontend
-- React (Vite)
-- React Router DOM
-- Axios
-- SweetAlert2
-- CSS (Custom Dark UI)
+**Frontend:**
+* React (Vite)
+* React Router
+* Axios
+* CSS / Tailwind
+* Context API for state management
 
-### Backend
-- Node.js
-- Express.js
-- MongoDB Atlas
-- Mongoose
-- JWT Authentication
-- Razorpay API
-- Resend Email API
+**Backend:**
+* Node.js
+* Express.js
+* MongoDB Atlas
+* Mongoose ODM
+* JWT Authentication
+* Razorpay API
+* Resend Email API
 
-### Deployment
-- Frontend → Vercel
-- Backend → Render
-- Database → MongoDB Atlas
+**Deployment:**
+* Vercel (Frontend)
+* Render (Backend)
+* MongoDB Atlas (Database)
 
----
+## 📸 Key Components
 
-## 📂 Project Structure
+* User authentication & registration
+* Restaurant discovery & filtering
+* Menu browsing with product details
+* Order checkout & payment processing
+* Admin dashboard for restaurant management
+* Rider assignment & order delivery tracking
+* Real-time notifications
 
-mern-ecommerce-webnapp/
-│
-├── frontend/
-│ ├── src/
-│ │ ├── components/
-│ │ ├── pages/
-│ │ ├── App.jsx
-│ │ └── main.jsx
-│ └── package.json
-│
-├── models/
-├── middleware/
-├── server.js
-└── package.json
+## ⚡ Installation & Setup
 
+**Clone the repository**
+```bash
+git clone https://github.com/lucyrahul005/Mern-project.git
+cd mern-ecommerce-webnapp
+```
 
----
+**Install dependencies**
+```bash
+npm install
+cd frontend && npm install && cd ..
+```
 
-## 🔐 Authentication Flow
+**Environment variables**
+Create `.env` file in root with:
+```
+MONGODB_URI=your_mongodb_connection
+JWT_SECRET=your_jwt_secret
+RAZORPAY_KEY_ID=your_razorpay_key
+RAZORPAY_KEY_SECRET=your_razorpay_secret
+```
 
-1. User registers
-2. Password is hashed using bcrypt
-3. JWT token is generated on login
-4. Token stored in localStorage
-5. Protected routes verify token using middleware
+**Run the application**
+```bash
+npm run dev
+```
 
----
+## 🌐 Live Demo
 
-## 💳 Payment Flow
+Frontend: https://mern-ecommerce-webnapp.vercel.app  
+Backend API: https://webnapp-backend.onrender.com
 
-1. User clicks "Buy Now"
-2. Razorpay order is created from backend
-3. Payment popup opens
-4. On successful payment:
-   - Order is saved in MongoDB
-   - Email confirmation is sent via Resend API
+## 📝 License
 
----
-
-## 📧 Email Integration
-
-Emails are sent using:
-
-Resend Email API
-
-This avoids SMTP limitations on cloud platforms and ensures reliable delivery.
-
----
+MIT
 
 ## 🌍 Environment Variables (Backend)
 

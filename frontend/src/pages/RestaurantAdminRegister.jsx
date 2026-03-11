@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
+import { API_URL } from "../config/api";
 import "./RestaurantAdminRegister.css";
-
-const API_URL = "http://localhost:5001";
 
 function RestaurantAdminRegister() {
   const navigate = useNavigate();

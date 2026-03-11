@@ -5,7 +5,9 @@
  * @param {string} apiUrl - Base API URL (e.g., http://localhost:5001)
  * @returns {string} - Complete image URL
  */
-export const getImageUrl = (imagePath, apiUrl = "http://localhost:5001") => {
+const DEFAULT_API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
+export const getImageUrl = (imagePath, apiUrl = DEFAULT_API_URL) => {
   if (!imagePath) return "";
 
   // If it's already a full URL (starts with http/https), return as is

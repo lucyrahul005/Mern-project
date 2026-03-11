@@ -11,10 +11,7 @@ function Register() {
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const API_URL =
-  import.meta.env.MODE === "development"
-    ? "http://localhost:5001"
-    : "https://webnapp-backend.onrender.com";
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
   const handleRegister = async (e) => {
     e.preventDefault();

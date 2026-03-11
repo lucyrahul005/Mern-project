@@ -3,10 +3,7 @@ import axios from "axios";
 import { FaBox, FaTruck, FaClock, FaCheckCircle, FaTimesCircle, FaPhone, FaMapMarkerAlt } from "react-icons/fa";
 import "../pages/Orders.css";
 
-const API_URL =
-  import.meta.env.MODE === "development"
-    ? "http://localhost:5001"
-    : "https://webnapp-backend.onrender.com";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 // Order status color mapping
 const statusColors = {

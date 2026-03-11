@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { getImageUrl } from "../utils/imageHelper";
+import { API_URL } from "../config/api";
 import "./AdminDashboard.css";
 import {
   LineChart,
@@ -13,8 +14,6 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-
-const API_URL = "http://localhost:5001";
 
 function Admin() {
   // ============ STATE ============

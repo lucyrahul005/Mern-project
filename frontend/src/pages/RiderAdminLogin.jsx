@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import "../pages/Auth.css";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 const RiderAdminLogin = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -39,7 +41,7 @@ const RiderAdminLogin = () => {
     try {
       console.log("🚴 Attempting rider login with email:", formData.email);
       
-      const response = await fetch("http://localhost:5001/api/rider/login", {
+      const response = await fetch(`${API_URL}/api/rider/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

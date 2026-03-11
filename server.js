@@ -4,7 +4,7 @@ const cors = require("cors");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { Resend } = require("resend");
-require("dotenv").config();
+require("dotenv").config(); // Load environment variables from .env
 
 const authRoutes = require("./routes/authRoutes");
 const orderRoutes = require("./routes/orderRoutes");
@@ -176,5 +176,9 @@ app.get("/my-orders", auth, async (req, res) => {
 });
 
 // ================= START SERVER =================
-const PORT = process.env.PORT || 5001;
-app.listen(PORT, () => console.log(`Server running on ${PORT}`));
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+  console.log(`📍 Environment: ${process.env.NODE_ENV || "development"}`);
+  console.log(`📌 Production Ready: ${process.env.PORT ? "✅ YES (Render)" : "❌ Development Mode"}`);
+});

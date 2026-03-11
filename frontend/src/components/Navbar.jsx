@@ -32,10 +32,7 @@ const Navbar = () => {
 
   const cartCount = cart.reduce((acc, item) => acc + item.quantity, 0);
 
-  const API_URL =
-    import.meta.env.MODE === "development"
-      ? "http://localhost:5001"
-      : "https://webnapp-backend.onrender.com";
+  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
   // Fetch unread notifications count
   useEffect(() => {
