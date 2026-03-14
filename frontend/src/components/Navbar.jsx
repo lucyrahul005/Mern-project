@@ -84,9 +84,11 @@ const Navbar = () => {
   };
 
   const navLinks = [
-    { path: '/', label: 'Home', icon: HomeIcon },
-    { path: '/restaurants', label: 'Restaurants', icon: BuildingStorefrontIcon },
-    { path: '/products', label: 'Products', icon: 'FaPizzaSlice' },
+    { path: '/', label: 'Home' },
+    { path: '#about', label: 'About Us' },
+    { path: '/products', label: 'Explore Foods' },
+    { path: '#reviews', label: 'Reviews' },
+    { path: '#team', label: 'Team' },
   ];
 
   return (
@@ -106,7 +108,7 @@ const Navbar = () => {
         </motion.div>
 
         {/* Desktop Search Bar */}
-        <div className="hidden md:flex navbar-search">
+        <div className="hidden md:flex navbar-search" style={{ display: 'none' }}>
           <form onSubmit={handleSearch} className="search-form">
             <MagnifyingGlassIcon className="search-icon" />
             <input
@@ -132,8 +134,18 @@ const Navbar = () => {
           ))}
         </div>
 
-        {/* Right Section */}
+        {/* Right Section - Phone Button for Desktop */}
         <div className="navbar-right">
+          {/* Desktop Phone Button */}
+          <a
+            href="tel:1800545123"
+            className="hidden md:flex phone-button"
+            title="Call us"
+          >
+            <span>📞</span>
+            1800 545 123
+          </a>
+
           {/* Mobile Search Icon */}
           <button
             className="md:hidden p-2 hover:bg-gray-100 rounded-full transition"
