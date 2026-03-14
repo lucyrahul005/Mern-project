@@ -1,239 +1,238 @@
-import { useMemo, useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import "./AdminResponsiveDashboard.css";
-
-const METRICS = [
-  { title: "Total Orders", value: "12,480", delta: "+8.2%" },
-  { title: "Active Restaurants", value: "1,240", delta: "+3.1%" },
-  { title: "New Users", value: "3,904", delta: "+5.6%" },
-  { title: "Revenue", value: "₹8.2L", delta: "+11.4%" },
-];
-
-const ORDERS = [
-  { id: "ODR-1142", customer: "Aarav K.", restaurant: "Spice Hub", amount: "₹540", status: "Preparing" },
-  { id: "ODR-1143", customer: "Meera S.", restaurant: "Biryani House", amount: "₹820", status: "Delivered" },
-  { id: "ODR-1144", customer: "Kabir P.", restaurant: "Urban Tadka", amount: "₹310", status: "Out for Delivery" },
-];
-
-const USERS = [
-  { id: "USR-2321", name: "Nisha R.", role: "Customer", orders: 18 },
-  { id: "USR-2322", name: "Rohit D.", role: "Rider", orders: 124 },
-  { id: "USR-2323", name: "Harsha T.", role: "Restaurant", orders: 82 },
-];
-
-const RESTAURANTS = [
-  { id: "RST-901", name: "Grill & Go", city: "Bengaluru", rating: "4.7" },
-  { id: "RST-902", name: "Saffron Lane", city: "Hyderabad", rating: "4.5" },
-  { id: "RST-903", name: "Bowls & More", city: "Pune", rating: "4.6" },
-];
-
-const PRODUCTS = [
-  { name: "Butter Chicken Bowl", price: "₹320", tag: "Popular" },
-  { name: "Veggie Fiesta Pizza", price: "₹420", tag: "New" },
-  { name: "Paneer Tikka Wrap", price: "₹220", tag: "Trending" },
-  { name: "Choco Lava Cake", price: "₹180", tag: "Dessert" },
-];
+import { API_URL } from "../config/api";
 
 const NAV_ITEMS = [
-  "Overview",
-  "Orders",
-  "Restaurants",
-  "Users",
-  "Menus",
-  "Offers",
-  "Analytics",
-  "Support",
+  { label: "Overview", icon: "📊" },
+  { label: "Orders", icon: "📦" },
+  { label: "Restaurants", icon: "🏪" },
+  { label: "Users", icon: "👥" },
+  { label: "Riders", icon: "🚴" },
+  { label: "Analytics", icon: "📈" },
 ];
-
-function TableCard({ title, rows, columns }) {
-  return (
-    <section className="panel">
-      <header className="panel-header">
-        <h3>{title}</h3>
-        <button className="btn ghost">View all</button>
-      </header>
-      <div className="table-wrap">
-        <table className="data-table">
-          <thead>
-            <tr>
-              {columns.map((column) => (
-                <th key={column.key}>{column.label}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {rows.map((row) => (
-              <tr key={row.id}>
-                {columns.map((column) => (
-                  <td key={column.key} data-label={column.label}>
-                    {row[column.key]}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </section>
-  );
-}
 
 export default function AdminResponsiveDashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [activeTab, setActiveTab] = useState("Overview");
+  const [orders, setOrders] = useState([]);
+  const [restaurants, setRestaurants] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const orderColumns = useMemo(
-    () => [
-      { key: "id", label: "Order ID" },
-      { key: "customer", label: "Customer" },
-      { key: "restaurant", label: "Restaurant" },
-      { key: "amount", label: "Amount" },
-      { key: "status", label: "Status" },
-    ],
-    []
-  );
+  useEffect(() => {
+    fetchAdminData();
+  }, []);
 
-  const userColumns = useMemo(
-    () => [
-      { key: "id", label: "User ID" },
-      { key: "name", label: "Name" },
-      { key: "role", label: "Role" },
-      { key: "orders", label: "Orders" },
-    ],
-    []
-  );
+  const fetchAdminData = async () => {
+    try {
+      const token = localStorage.getItem("adminToken");
+      const config = { headers: { Authorization: `Bearer ${token}` } };
 
-  const restaurantColumns = useMemo(
-    () => [
-      { key: "id", label: "Restaurant ID" },
-      { key: "name", label: "Restaurant" },
-      { key: "city", label: "City" },
-      { key: "rating", label: "Rating" },
-    ],
-    []
-  );
+      const [ordersRes, restaurantsRes, usersRes] = await Promise.all([
+        axios.get(`${API_URL}/api/orders`, config).catch(() => ({ data: [] })),
+        axios.get(`${API_URL}/api/restaurants`, config).catch(() => ({ data: [] })),
+        axios.get(`${API_URL}/api/admin/users`, config).catch(() => ({ data: [] })),
+      ]);
+
+      setOrders(ordersRes.data?.slice(0, 10) || []);
+      setRestaurants(restaurantsRes.data?.slice(0, 10) || []);
+      setUsers(usersRes.data?.slice(0, 10) || []);
+    } catch (error) {
+      console.error("Error fetching admin data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const totalOrders = orders.length;
+  const totalRestaurants = restaurants.length;
+  const totalUsers = users.length;
 
   return (
-    <div className={`admin-shell ${sidebarCollapsed ? "sidebar-collapsed" : ""}`}>
-      <aside className={`sidebar ${sidebarOpen ? "open" : ""}`}>
-        <div className="brand">
-          <span className="brand-mark">🍲</span>
-          <div>
-            <p className="brand-title">FoodFlow Admin</p>
-            <span className="brand-sub">Premium Control</span>
-          </div>
+    <div className="admin-dashboard">
+      {/* Sidebar */}
+      <aside className={`admin-sidebar ${sidebarOpen ? "open" : ""}`}>
+        <div className="sidebar-header">
+          <h2>🍲 FoodFlow Admin</h2>
+          <button className="close-btn" onClick={() => setSidebarOpen(false)}>✕</button>
         </div>
         <nav className="sidebar-nav">
           {NAV_ITEMS.map((item) => (
-            <button key={item} className="nav-item">
-              <span className="nav-dot" />
-              <span className="nav-label">{item}</span>
+            <button
+              key={item.label}
+              className={`nav-link ${activeTab === item.label ? "active" : ""}`}
+              onClick={() => {
+                setActiveTab(item.label);
+                setSidebarOpen(false);
+              }}
+            >
+              <span className="icon">{item.icon}</span>
+              <span className="label">{item.label}</span>
             </button>
           ))}
         </nav>
-        <div className="sidebar-footer">
-          <button className="btn accent">Create Offer</button>
-          <button className="btn ghost">Settings</button>
-        </div>
       </aside>
 
-      <div className="page">
-        <header className="topbar">
-          <div className="topbar-left">
-            <button
-              className="icon-btn"
-              onClick={() => setSidebarOpen((prev) => !prev)}
-              aria-label="Toggle menu"
-            >
-              ☰
-            </button>
-            <button
-              className="icon-btn desktop-only"
-              onClick={() => setSidebarCollapsed((prev) => !prev)}
-              aria-label="Collapse sidebar"
-            >
-              ⇔
-            </button>
-            <div>
-              <h1>Dashboard</h1>
-              <p>Track orders, restaurants, and operations at a glance.</p>
-            </div>
-          </div>
-          <div className="topbar-actions">
-            <div className="search">
-              <input type="search" placeholder="Search orders or users" />
-            </div>
-            <button className="icon-btn">🔔</button>
-            <div className="profile-chip">
-              <span className="avatar">AR</span>
-              <div>
-                <p className="profile-name">Admin Rahul</p>
-                <span className="profile-role">Super Admin</span>
-              </div>
-            </div>
+      {/* Main Content */}
+      <div className="admin-main">
+        {/* Header */}
+        <header className="admin-header">
+          <button className="menu-toggle" onClick={() => setSidebarOpen(!sidebarOpen)}>
+            ☰ Menu
+          </button>
+          <h1>{activeTab}</h1>
+          <div className="header-actions">
+            <button className="btn-icon">🔔</button>
+            <button className="btn-icon">⚙️</button>
           </div>
         </header>
 
-        <main className="content">
-          <section className="metrics-grid">
-            {METRICS.map((metric) => (
-              <div className="metric-card" key={metric.title}>
-                <p className="metric-title">{metric.title}</p>
-                <h2>{metric.value}</h2>
-                <span className="metric-delta">{metric.delta}</span>
-              </div>
-            ))}
-          </section>
-
-          <section className="analytics-grid">
-            <div className="panel chart-panel">
-              <header className="panel-header">
-                <h3>Weekly Orders</h3>
-                <button className="btn ghost">Export</button>
-              </header>
-              <div className="chart-placeholder">
-                <div className="chart-bar" />
-                <div className="chart-bar tall" />
-                <div className="chart-bar mid" />
-                <div className="chart-bar" />
-                <div className="chart-bar tall" />
-              </div>
-            </div>
-            <div className="panel chart-panel">
-              <header className="panel-header">
-                <h3>Revenue Mix</h3>
-                <button className="btn ghost">Details</button>
-              </header>
-              <div className="chart-donut">
-                <div className="donut" />
-                <ul>
-                  <li>Delivery: 54%</li>
-                  <li>Pickup: 28%</li>
-                  <li>Offers: 18%</li>
-                </ul>
-              </div>
-            </div>
-          </section>
-
-          <section className="product-grid">
-            {PRODUCTS.map((product) => (
-              <article className="product-card" key={product.name}>
-                <div className="product-image" />
-                <div>
-                  <h4>{product.name}</h4>
-                  <p>{product.price}</p>
+        {/* Content */}
+        <main className="admin-content">
+          {activeTab === "Overview" && (
+            <div className="overview-section">
+              <div className="metrics-grid">
+                <div className="metric-box">
+                  <span className="metric-icon">📦</span>
+                  <div>
+                    <p className="metric-label">Total Orders</p>
+                    <h3 className="metric-value">{totalOrders}</h3>
+                  </div>
                 </div>
-                <span className="product-tag">{product.tag}</span>
-              </article>
-            ))}
-          </section>
+                <div className="metric-box">
+                  <span className="metric-icon">🏪</span>
+                  <div>
+                    <p className="metric-label">Restaurants</p>
+                    <h3 className="metric-value">{totalRestaurants}</h3>
+                  </div>
+                </div>
+                <div className="metric-box">
+                  <span className="metric-icon">👥</span>
+                  <div>
+                    <p className="metric-label">Users</p>
+                    <h3 className="metric-value">{totalUsers}</h3>
+                  </div>
+                </div>
+                <div className="metric-box">
+                  <span className="metric-icon">💰</span>
+                  <div>
+                    <p className="metric-label">Revenue</p>
+                    <h3 className="metric-value">₹0</h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
 
-          <div className="table-grid">
-            <TableCard title="Recent Orders" rows={ORDERS} columns={orderColumns} />
-            <TableCard title="Active Users" rows={USERS} columns={userColumns} />
-            <TableCard title="Top Restaurants" rows={RESTAURANTS} columns={restaurantColumns} />
-          </div>
+          {activeTab === "Orders" && (
+            <div className="section-content">
+              <h2>Recent Orders</h2>
+              {orders.length ? (
+                <table className="data-table">
+                  <thead>
+                    <tr>
+                      <th>Order ID</th>
+                      <th>Customer</th>
+                      <th>Amount</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {orders.map((order) => (
+                      <tr key={order._id}>
+                        <td>{order._id?.slice(-6)}</td>
+                        <td>{order.userId?.name || "Unknown"}</td>
+                        <td>₹{order.totalAmount}</td>
+                        <td><span className="status-badge">{order.status}</span></td>
+                        <td><button className="btn-small">Details</button></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ) : (
+                <p className="empty-state">No orders found</p>
+              )}
+            </div>
+          )}
+
+          {activeTab === "Restaurants" && (
+            <div className="section-content">
+              <h2>All Restaurants</h2>
+              {restaurants.length ? (
+                <table className="data-table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>City</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {restaurants.map((restaurant) => (
+                      <tr key={restaurant._id}>
+                        <td>{restaurant.name}</td>
+                        <td>{restaurant.city || "N/A"}</td>
+                        <td><span className="status-badge">{restaurant.approved ? "Approved" : "Pending"}</span></td>
+                        <td><button className="btn-small">Edit</button></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ) : (
+                <p className="empty-state">No restaurants found</p>
+              )}
+            </div>
+          )}
+
+          {activeTab === "Users" && (
+            <div className="section-content">
+              <h2>All Users</h2>
+              {users.length ? (
+                <table className="data-table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Role</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {users.map((user) => (
+                      <tr key={user._id}>
+                        <td>{user.name}</td>
+                        <td>{user.email}</td>
+                        <td><span className="role-badge">User</span></td>
+                        <td><button className="btn-small">View</button></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ) : (
+                <p className="empty-state">No users found</p>
+              )}
+            </div>
+          )}
+
+          {activeTab === "Riders" && (
+            <div className="section-content">
+              <h2>Riders Management</h2>
+              <p className="empty-state">Riders management coming soon</p>
+            </div>
+          )}
+
+          {activeTab === "Analytics" && (
+            <div className="section-content">
+              <h2>Analytics</h2>
+              <p className="empty-state">Analytics dashboard coming soon</p>
+            </div>
+          )}
         </main>
       </div>
     </div>
   );
 }
+
