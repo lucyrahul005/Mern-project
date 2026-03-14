@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import { API_URL } from "../config/api";
+import "./Auth.css";
 
 function RestaurantAdminLogin() {
   const navigate = useNavigate();

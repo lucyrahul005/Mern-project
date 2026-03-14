@@ -1033,6 +1033,7 @@
   }
 }
 
+
 /* Payment Transactions Table */
 .payment-transactions-table {
   display: flex;
@@ -1126,4 +1127,4 @@
   font-size: 0.78rem;
   color: var(--text-muted);
 }
-}
+
