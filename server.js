@@ -27,12 +27,30 @@ const app = express();
 
 // ================= MIDDLEWARE =================
 console.log("🔧 Configuring middleware...");
-app.use(cors({
-  origin: "https://webnapp-food-delivery.vercel.app",
-  methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-  credentials: true,
-  allowedHeaders: ["Content-Type", "Authorization"]
-}));
+const allowedOrigins = (process.env.ALLOWED_ORIGINS || "")
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
+const isAllowedOrigin = (origin) => {
+  if (!origin) return true; // allow same-origin or server-to-server
+  if (allowedOrigins.includes(origin)) return true;
+  if (origin.endsWith(".vercel.app")) return true; // allow Vercel preview/prod domains
+  if (origin.startsWith("http://localhost") || origin.startsWith("http://127.0.0.1")) return true;
+  return false;
+};
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (isAllowedOrigin(origin)) return callback(null, true);
+      return callback(new Error(`CORS blocked for origin: ${origin}`));
+    },
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+    credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization", "user-id"],
+  })
+);
 app.use(express.json({ limit: "100mb", strict: false }));
 app.use(express.urlencoded({ limit: "100mb", extended: true }));
 console.log("✅ Body parser configured with 100MB limits");
