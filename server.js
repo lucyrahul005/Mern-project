@@ -1,4 +1,6 @@
 const express = require("express");
+const path = require("path");
+const fs = require("fs");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
@@ -36,8 +38,10 @@ app.use(express.urlencoded({ limit: "100mb", extended: true }));
 console.log("✅ Body parser configured with 100MB limits");
 console.log("✅ CORS enabled for https://webnapp-food-delivery.vercel.app");
 
-// Serve static files for uploads
-app.use("/uploads", express.static("uploads"));
+// Serve static files for uploads (supports Render persistent disk)
+const uploadsDir = process.env.UPLOADS_DIR || path.join(__dirname, "uploads");
+fs.mkdirSync(uploadsDir, { recursive: true });
+app.use("/uploads", express.static(uploadsDir));
 
 // ✅ USE ONLY THIS FOR PRODUCTS (IMPORTANT)
 app.use("/api/products", productRoutes);
