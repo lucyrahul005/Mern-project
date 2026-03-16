@@ -518,9 +518,12 @@
 
   .search-wrapper {
     display: flex;
+    align-items: center;
     gap: 0.4rem;
     padding: 0.4rem;
     border-radius: 0.75rem;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .search-hero-input {
@@ -530,11 +533,18 @@
   }
 
   .search-hero-btn {
-    padding: 0.65rem 0.8rem;
+    padding: 0;
+    margin: 0;
+    width: 35px;
+    height: 28px;
+    flex: 0 0 35px;
     font-size: 0.85rem;
     border-radius: 0.65rem;
     font-weight: 600;
-    min-width: auto;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .section-title {
