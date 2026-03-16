@@ -172,6 +172,12 @@
   color: #6b7280;
   transition: color 0.3s ease;
   padding: 0.5rem;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
 }
 
 .cart-button:hover {
@@ -205,6 +211,12 @@
   transition: color 0.3s ease;
   padding: 0.5rem;
   margin-right: 0.5rem;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
 }
 
 .notification-button:hover {
@@ -248,6 +260,8 @@
   border: none;
   cursor: pointer;
   transition: all 0.2s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .btn-primary {
@@ -443,7 +457,7 @@
     max-width: none;
     flex: 1;
     order: 2;
-    min-width: 150px;
+    min-width: 120px;
   }
 
   .search-form {
@@ -473,10 +487,10 @@
     order: 3;
     width: 100%;
     display: flex;
-    gap: 0.5rem;
+    gap: 0.3rem;
     overflow-x: auto;
     overflow-y: hidden;
-    padding: 0.4rem 0.5rem;
+    padding: 0.4rem 0.2rem;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
     margin-top: 0.4rem;
@@ -485,33 +499,21 @@
     /* Hide scrollbar on mobile for cleaner look, but keep scrolling */
     scrollbar-width: none;
     /* For webkit browsers */
-    -webkit-scrollbar: none;
-  }
-
-  /* Hide scrollbar for Firefox */
-  .navbar-right {
-    scrollbar-width: thin;
-    scrollbar-color: #ff6b35 transparent;
+    -ms-overflow-style: none;
   }
 
   .navbar-right::-webkit-scrollbar {
-    height: 2px;
     display: none;
   }
 
-  .navbar-right::-webkit-scrollbar-track {
-    background: transparent;
+  /* Force all buttons to not shrink and maintain flex layout */
+  .navbar-right > * {
+    flex-shrink: 0;
   }
 
-  .navbar-right::-webkit-scrollbar-thumb {
-    background: #ff6b35;
-    border-radius: 10px;
-    display: none;
-  }
-
-  .navbar-right::-webkit-scrollbar-thumb:hover {
-    background: #ff8c42;
-    display: none;
+  .navbar-right > button,
+  .navbar-right > div {
+    flex-shrink: 0;
   }
 
   .cart-button,
@@ -519,12 +521,21 @@
   .wishlist-button,
   .account-button,
   .dark-mode-btn {
-    flex-shrink: 0;
+    flex-shrink: 0 !important;
     min-width: 44px;
     min-height: 44px;
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 0.5rem !important;
+    width: auto;
+  }
+
+  /* Mobile search button styling */
+  .navbar-right > button[class*="p-2"] {
+    min-width: 36px;
+    min-height: 36px;
+    padding: 0.4rem !important;
   }
 
   .user-button {
@@ -534,22 +545,40 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 0.5rem !important;
+  }
+
+  /* Auth dropdown section */
+  .navbar-right > div[class*="gap"] {
+    flex-shrink: 0;
+    display: flex;
+    gap: 0.3rem;
+  }
+
+  .btn-outline,
+  .btn-primary {
+    white-space: nowrap;
+    flex-shrink: 0;
+    padding: 0.4rem 0.8rem !important;
+    font-size: 0.75rem;
   }
 
   .profile-section {
     display: flex;
-    gap: 0.5rem;
+    gap: 0.3rem;
     flex-shrink: 0;
   }
 
   .profile-btn {
-    padding: 0.4rem 0.8rem;
-    font-size: 0.8rem;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.75rem;
+    flex-shrink: 0;
   }
 
   .dropdown-menu {
     min-width: 140px;
     font-size: 0.8rem;
+    z-index: 1000;
   }
 
   .dropdown-item {
@@ -558,6 +587,10 @@
   }
 
   /* Ensure auth dropdown works on mobile */
+  .auth-dropdown {
+    flex-shrink: 0;
+  }
+
   .auth-dropdown .dropdown-menu {
     position: fixed;
     right: auto;
@@ -566,6 +599,11 @@
     z-index: 1000;
     top: auto;
     bottom: auto;
+  }
+
+  /* Hide mobile menu on ultra-small screens if needed, but it should scroll */
+  .navbar-right button:last-child {
+    flex-shrink: 0;
   }
 }
 
