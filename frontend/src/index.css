@@ -92,12 +92,7 @@ body {
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   transition: background 0.3s ease, color 0.3s ease;
-}
-
-@media (max-width: 480px) {
-  body {
-    padding-top: 140px;
-  }
+  padding-top: 124px;
 }
 
 /* ================= IMAGES ================= */

@@ -2,7 +2,7 @@ import { FaShoppingCart, FaHome, FaThLarge, FaHeart, FaUser } from "react-icons/
 import { useCart } from "../context/CartContext";
 import { useTheme } from "../context/ThemeContext";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./Header.css";
 
 function Header() {
@@ -11,6 +11,38 @@ function Header() {
   const navigate = useNavigate();
   const location = useLocation();
   const [search, setSearch] = useState("");
+  const [isVisible, setIsVisible] = useState(true);
+  const lastScrollYRef = useRef(0);
+  const headerRef = useRef(null);
+
+  useEffect(() => {
+    let ticking = false;
+
+    const handleScroll = () => {
+      lastScrollYRef.current = window.scrollY;
+
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const currentScrollY = lastScrollYRef.current;
+          const previousScrollY = lastScrollYRef.current;
+
+          if (currentScrollY > previousScrollY && currentScrollY > 100) {
+            // Scrolling down - hide navbar
+            setIsVisible(false);
+          } else {
+            // Scrolling up - show navbar
+            setIsVisible(true);
+          }
+
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const handleToggleTheme = () => {
     toggleTheme();
@@ -28,7 +60,10 @@ function Header() {
   const isActive = (path) => location.pathname === path;
 
   return (
-    <header className="header-wrapper">
+    <header 
+      className={`header-wrapper ${isVisible ? "visible" : "hidden"}`}
+      ref={headerRef}
+    >
       <div className="header-inner">
         {/* LEFT SECTION */}
         <div className="header-left">
