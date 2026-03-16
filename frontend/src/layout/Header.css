@@ -267,9 +267,11 @@
   }
 
   .search-container button {
-    padding: 6px 8px;
-    font-size: 11px;
-    min-width: 50px;
+    padding: 4px 6px;
+    font-size: 10px;
+    width: 35px;
+    flex-shrink: 0;
+    white-space: nowrap;
   }
 
   /* Show all nav items with horizontal scroll */
@@ -481,11 +483,13 @@
   }
 
   .search-container button {
-    padding: 6px 8px;
-    font-size: 11px;
+    padding: 4px 6px;
+    font-size: 10px;
     border-radius: 6px;
     font-weight: 600;
-    min-width: 50px;
+    width: 35px;
+    flex-shrink: 0;
+    white-space: nowrap;
   }
 
   /* Buttons and nav - horizontal scrollable row */
