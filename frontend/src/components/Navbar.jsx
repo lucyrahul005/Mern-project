@@ -107,8 +107,8 @@ const Navbar = () => {
           </span>
         </motion.div>
 
-        {/* Desktop Search Bar */}
-        <div className="hidden md:flex navbar-search" style={{ display: 'none' }}>
+        {/* Search Bar */}
+        <div className="navbar-search">
           <form onSubmit={handleSearch} className="search-form">
             <MagnifyingGlassIcon className="search-icon" />
             <input
@@ -118,11 +118,14 @@ const Navbar = () => {
               onChange={(e) => setSearch(e.target.value)}
               className="search-input"
             />
+            <button type="submit" className="search-button">
+              Search
+            </button>
           </form>
         </div>
 
-        {/* Desktop Links */}
-        <div className="hidden md:flex navbar-links">
+        {/* Navigation Links */}
+        <div className="navbar-links">
           {navLinks.map((link) => (
             <NavLink
               key={link.path}
