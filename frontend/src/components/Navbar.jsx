@@ -85,10 +85,10 @@ const Navbar = () => {
 
   const navLinks = [
     { path: '/', label: 'Home' },
-    { path: '#about', label: 'About Us' },
-    { path: '/products', label: 'Explore Foods' },
-    { path: '#reviews', label: 'Reviews' },
-    { path: '#team', label: 'Team' },
+    { path: '/products', label: 'Products' },
+    { path: '/restaurants', label: 'Restaurants' },
+    { path: '/wishlist', label: 'Wishlist' },
+    { path: '/account', label: 'Account' },
   ];
 
   return (
@@ -101,9 +101,9 @@ const Navbar = () => {
           className="navbar-logo cursor-pointer"
           onClick={() => navigate('/')}
         >
-          <span className="logo-icon">🍔</span>
+          <span className="logo-icon">�️</span>
           <span className="logo-text">
-            Food<span className="logo-highlight">ie</span>
+            Webn<span className="logo-highlight">App</span>
           </span>
         </motion.div>
 
@@ -113,7 +113,7 @@ const Navbar = () => {
             <MagnifyingGlassIcon className="search-icon" />
             <input
               type="text"
-              placeholder="Search restaurants or food..."
+              placeholder="Search premium products..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="search-input"
