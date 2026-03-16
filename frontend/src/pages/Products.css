@@ -39,7 +39,7 @@
   margin-bottom: 30px;
   border-bottom: 1px solid var(--border);
   position: sticky;
-  top: 70px;
+  top: 0;
   z-index: 100;
   backdrop-filter: blur(8px);
   box-shadow: 0 12px 24px rgba(34, 30, 24, 0.06);
@@ -174,10 +174,6 @@
 }
 
 @media (max-width: 768px) {
-  .filters-section-products {
-    top: 120px;
-  }
-
   .products-grid {
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
     gap: 15px;
@@ -185,10 +181,6 @@
 }
 
 @media (max-width: 480px) {
-  .filters-section-products {
-    top: 120px;
-  }
-
   .products-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
