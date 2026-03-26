@@ -3,7 +3,7 @@ import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
 import { API_URL } from "../config/api";
 import Toast from "../components/Toast";
-import "./AdminDashboard.css";
+import "./NewAdminDashboard.css";
 
 // ============ SECTION COMPONENTS ============
 
@@ -796,7 +796,7 @@ function NewAdminDashboard() {
 
   const logout = () => {
     sessionStorage.removeItem("token");
-    window.location.href = "/login";
+    window.location.href = "/admin-login";
   };
 
   const SECTIONS = [
@@ -824,6 +824,9 @@ function NewAdminDashboard() {
         <div className="sidebar-header">
           <h2>🍴 FoodFlow Admin</h2>
           <p>Platform Control Center</p>
+          <div className="user-details">
+            <p className="user-time">{new Date().toLocaleString()}</p>
+          </div>
         </div>
 
         <nav className="sidebar-menu">
@@ -839,17 +842,15 @@ function NewAdminDashboard() {
           ))}
         </nav>
 
-        <button className="btn-logout" onClick={logout}>🚪 Logout</button>
+        <div className="sidebar-footer">
+          <button className="btn-logout" onClick={logout}>🚪 Logout</button>
+        </div>
       </aside>
 
       <main className="admin-main-content">
-        <header className="admin-top-bar">
+        <div className="section-title">
           <h1>{SECTIONS.find(s => s.id === activeSection)?.label || "Dashboard"}</h1>
-          <div className="top-bar-right">
-            <span className="user-info">Admin User</span>
-            <span className="timestamp">{new Date().toLocaleString()}</span>
-          </div>
-        </header>
+        </div>
 
         <AnimatePresence mode="wait">
           <motion.div
@@ -869,3 +870,4 @@ function NewAdminDashboard() {
 }
 
 export default NewAdminDashboard;
+
