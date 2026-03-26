@@ -170,10 +170,12 @@ function PremiumAdminDashboard() {
   };
 
   useEffect(() => {
-    fetchDashboardData();
-    const interval = setInterval(fetchDashboardData, 30000);
-    return () => clearInterval(interval);
-  }, [authHeaders]);
+    if (token) {
+      fetchDashboardData();
+      const interval = setInterval(fetchDashboardData, 30000);
+      return () => clearInterval(interval);
+    }
+  }, [authHeaders, token]);
 
   const logout = () => {
     sessionStorage.removeItem("token");
@@ -270,161 +272,170 @@ function PremiumAdminDashboard() {
 
         {/* ============ DASHBOARD CONTENT ============ */}
         <main className="dashboard-content">
-          {/* Page Title */}
-          <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="page-header">
-            <h1>Dashboard Overview</h1>
-            <p>Welcome back, Admin! Here's your platform's performance.</p>
-          </motion.div>
+          {loadingData ? (
+            <div className="loading-container">
+              <div className="loading-spinner"></div>
+              <p>Loading dashboard...</p>
+            </div>
+          ) : (
+            <>
+              {/* Page Title */}
+              <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="page-header">
+                <h1>Dashboard Overview</h1>
+                <p>Welcome back, Admin! Here's your platform's performance.</p>
+              </motion.div>
 
-          {/* KPI Cards */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ staggerChildren: 0.1 }}
-            className="kpi-grid"
-          >
-            <KPICard
-              icon="📦"
-              title="Total Orders"
-              value={stats?.totalOrders || 0}
-              change={12}
-              gradient="purple"
-            />
-            <KPICard
-              icon="💰"
-              title="Total Revenue"
-              value={`₹${(stats?.totalRevenue || 0).toLocaleString()}`}
-              change={18}
-              gradient="pink"
-            />
-            <KPICard
-              icon="👥"
-              title="Active Users"
-              value={stats?.totalUsers || 0}
-              change={8}
-              gradient="cyan"
-            />
-            <KPICard
-              icon="🏪"
-              title="Restaurants"
-              value={stats?.totalRestaurants || 0}
-              change={5}
-              gradient="amber"
-            />
-            <KPICard
-              icon="🚴"
-              title="Delivery Partners"
-              value="45"
-              change={3}
-              gradient="green"
-            />
-          </motion.div>
+              {/* KPI Cards */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ staggerChildren: 0.1 }}
+                className="kpi-grid"
+              >
+                <KPICard
+                  icon="📦"
+                  title="Total Orders"
+                  value={stats?.totalOrders || 0}
+                  change={12}
+                  gradient="purple"
+                />
+                <KPICard
+                  icon="💰"
+                  title="Total Revenue"
+                  value={`₹${(stats?.totalRevenue || 0).toLocaleString()}`}
+                  change={18}
+                  gradient="pink"
+                />
+                <KPICard
+                  icon="👥"
+                  title="Active Users"
+                  value={stats?.totalUsers || 0}
+                  change={8}
+                  gradient="cyan"
+                />
+                <KPICard
+                  icon="🏪"
+                  title="Restaurants"
+                  value={stats?.totalRestaurants || 0}
+                  change={5}
+                  gradient="amber"
+                />
+                <KPICard
+                  icon="🚴"
+                  title="Delivery Partners"
+                  value="45"
+                  change={3}
+                  gradient="green"
+                />
+              </motion.div>
 
-          {/* Charts Row */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="charts-grid"
-          >
-            {/* Revenue & Orders Chart */}
-            <div className="glass-card chart-card">
-              <div className="card-header">
-                <h3>📊 Revenue & Orders</h3>
-                <select className="chart-period">
-                  <option>This Week</option>
-                  <option>This Month</option>
-                  <option>This Year</option>
-                </select>
+              {/* Charts Row */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="charts-grid"
+              >
+                {/* Revenue & Orders Chart */}
+                <div className="glass-card chart-card">
+                  <div className="card-header">
+                    <h3>📊 Revenue & Orders</h3>
+                    <select className="chart-period">
+                      <option>This Week</option>
+                      <option>This Month</option>
+                      <option>This Year</option>
+                    </select>
+                  </div>
+                  <ResponsiveContainer width="100%" height={300}>
+                    <LineChart data={revenueChartData}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
+                      <XAxis stroke="rgba(255,255,255,0.5)" />
+                      <YAxis stroke="rgba(255,255,255,0.5)" />
+                      <Tooltip
+                        contentStyle={{
+                          backgroundColor: "rgba(20, 20, 40, 0.95)",
+                          border: "1px solid rgba(139, 92, 246, 0.3)",
+                          borderRadius: "12px",
+                        }}
+                      />
+                      <Legend />
+                      <Line
+                        type="monotone"
+                        dataKey="revenue"
+                        stroke="#8b5cf6"
+                        strokeWidth={3}
+                        dot={{ fill: "#8b5cf6", r: 5 }}
+                        activeDot={{ r: 7 }}
+                      />
+                      <Line
+                        type="monotone"
+                        dataKey="orders"
+                        stroke="#ec4899"
+                        strokeWidth={3}
+                        dot={{ fill: "#ec4899", r: 5 }}
+                        activeDot={{ r: 7 }}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
+
+                {/* Top Selling Foods */}
+                <div className="glass-card chart-card">
+                  <div className="card-header">
+                    <h3>🍔 Top Selling Foods</h3>
+                  </div>
+                  <ResponsiveContainer width="100%" height={300}>
+                    <PieChart>
+                      <Pie
+                        data={topFoodsData}
+                        cx="50%"
+                        cy="50%"
+                        labelLine={false}
+                        label={({ name, sales }) => `${name}: ${sales}`}
+                        outerRadius={100}
+                        fill="#8884d8"
+                        dataKey="sales"
+                      >
+                        {COLORS.map((color, index) => (
+                          <Cell key={`cell-${index}`} fill={color} />
+                        ))}
+                      </Pie>
+                      <Tooltip />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </div>
+              </motion.div>
+
+              {/* Recent Orders & Top Restaurants */}
+              <div className="bottom-section">
+                <RecentOrdersTable orders={orders} />
+                <TopRestaurants restaurants={restaurants} />
               </div>
-              <ResponsiveContainer width="100%" height={300}>
-                <LineChart data={revenueChartData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
-                  <XAxis stroke="rgba(255,255,255,0.5)" />
-                  <YAxis stroke="rgba(255,255,255,0.5)" />
-                  <Tooltip
-                    contentStyle={{
-                      backgroundColor: "rgba(20, 20, 40, 0.95)",
-                      border: "1px solid rgba(139, 92, 246, 0.3)",
-                      borderRadius: "12px",
-                    }}
-                  />
-                  <Legend />
-                  <Line
-                    type="monotone"
-                    dataKey="revenue"
-                    stroke="#8b5cf6"
-                    strokeWidth={3}
-                    dot={{ fill: "#8b5cf6", r: 5 }}
-                    activeDot={{ r: 7 }}
-                  />
-                  <Line
-                    type="monotone"
-                    dataKey="orders"
-                    stroke="#ec4899"
-                    strokeWidth={3}
-                    dot={{ fill: "#ec4899", r: 5 }}
-                    activeDot={{ r: 7 }}
-                  />
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
 
-            {/* Top Selling Foods */}
-            <div className="glass-card chart-card">
-              <div className="card-header">
-                <h3>🍔 Top Selling Foods</h3>
-              </div>
-              <ResponsiveContainer width="100%" height={300}>
-                <PieChart>
-                  <Pie
-                    data={topFoodsData}
-                    cx="50%"
-                    cy="50%"
-                    labelLine={false}
-                    label={({ name, sales }) => `${name}: ${sales}`}
-                    outerRadius={100}
-                    fill="#8884d8"
-                    dataKey="sales"
-                  >
-                    {COLORS.map((color, index) => (
-                      <Cell key={`cell-${index}`} fill={color} />
-                    ))}
-                  </Pie>
-                  <Tooltip />
-                </PieChart>
-              </ResponsiveContainer>
-            </div>
-          </motion.div>
-
-          {/* Recent Orders & Top Restaurants */}
-          <div className="bottom-section">
-            <RecentOrdersTable orders={orders} />
-            <TopRestaurants restaurants={restaurants} />
-          </div>
-
-          {/* Quick Stats */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="quick-stats"
-          >
-            <div className="glass-card stat-box">
-              <h4>🟢 Pending Orders</h4>
-              <p className="stat-value">{stats?.pendingOrders || 0}</p>
-            </div>
-            <div className="glass-card stat-box">
-              <h4>✓ Delivered Orders</h4>
-              <p className="stat-value">{stats?.deliveredOrders || 0}</p>
-            </div>
-            <div className="glass-card stat-box">
-              <h4>✕ Cancelled Orders</h4>
-              <p className="stat-value">{stats?.cancelledOrders || 0}</p>
-            </div>
-            <div className="glass-card stat-box">
-              <h4>⭐ Avg Rating</h4>
-              <p className="stat-value">4.8</p>
-            </div>
-          </motion.div>
+              {/* Quick Stats */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="quick-stats"
+              >
+                <div className="glass-card stat-box">
+                  <h4>🟢 Pending Orders</h4>
+                  <p className="stat-value">{stats?.pendingOrders || 0}</p>
+                </div>
+                <div className="glass-card stat-box">
+                  <h4>✓ Delivered Orders</h4>
+                  <p className="stat-value">{stats?.deliveredOrders || 0}</p>
+                </div>
+                <div className="glass-card stat-box">
+                  <h4>✕ Cancelled Orders</h4>
+                  <p className="stat-value">{stats?.cancelledOrders || 0}</p>
+                </div>
+                <div className="glass-card stat-box">
+                  <h4>⭐ Avg Rating</h4>
+                  <p className="stat-value">4.8</p>
+                </div>
+              </motion.div>
+            </>
+          )}
         </main>
       </div>
     </div>
